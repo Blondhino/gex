@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "gex"
 include(":app")
 
+include(":core:designsystem")

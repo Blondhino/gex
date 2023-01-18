@@ -20,6 +20,11 @@ gradlePlugin {
       id = "gex.android.application.compose"
       implementationClass = "AndroidComposeApplicationConventionPlugin"
     }
+  
+    register("androidLibraryCompose"){
+      id = "gex.android.library.compose"
+      implementationClass = "AndroidComposeLibraryConventionPlugin"
+    }
     
   }
 }
