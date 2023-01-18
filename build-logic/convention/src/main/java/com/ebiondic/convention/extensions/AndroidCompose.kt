@@ -10,7 +10,11 @@ import org.gradle.kotlin.dsl.getByType
  */
 internal fun Project.configureAndroidCompose(commonExtension: CommonExtension<*, *, *, *>) {
   val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+ 
   commonExtension.apply {
+    
+    configureKotlinAndroid(this)
+    
     buildFeatures {
       compose = true
     }

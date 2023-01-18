@@ -1,4 +1,5 @@
 pluginManagement {
+  includeBuild("build-logic")
   repositories {
     google()
     mavenCentral()
@@ -6,7 +7,6 @@ pluginManagement {
   }
 }
 dependencyResolutionManagement {
-  includeBuild("build-logic")
   repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
   repositories {
     google()
@@ -14,5 +14,5 @@ dependencyResolutionManagement {
   }
 }
 rootProject.name = "gex"
-include (":app")
+include(":app")
 

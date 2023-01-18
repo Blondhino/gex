@@ -1,5 +1,3 @@
-package com.ebiondic.convention
-
 import com.android.build.api.dsl.ApplicationExtension
 import com.ebiondic.convention.extensions.configureAndroidCompose
 import org.gradle.api.Plugin
