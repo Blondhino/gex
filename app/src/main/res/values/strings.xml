@@ -1,3 +1,4 @@
 <resources>
   <string name="app_name">Gex</string>
+  <string name="search_placeholder">Repository name</string>
 </resources>

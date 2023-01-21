@@ -1,11 +1,14 @@
 package com.ebiondic.search
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ebiondic.designsystem.component.InputTextField
+import com.ebiondic.designsystem.theme.smallPadding
 import com.ebiondic.search.action.SearchScreenEvent
 import com.ebiondic.search.action.SearchScreenUiState
 
@@ -31,7 +34,13 @@ internal fun SearchScreen(
   onSearchTermChanged: (String) -> Unit,
   onRepositorySelected: () -> Unit
 ) {
-  Box(modifier = modifier.fillMaxSize()) {
-    Text("This is a search screen")
+  Column(modifier = modifier
+    .fillMaxSize()
+    .padding(smallPadding)) {
+    InputTextField(
+      value = uiState.searchTerm,
+      onValueChange = { onSearchTermChanged(it) },
+      hint = stringResource(R.string.search_placeholder)
+    )
   }
 }
