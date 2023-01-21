@@ -5,6 +5,9 @@ plugins {
 
 android {
   namespace = "com.ebiondic.designsystem"
+  defaultConfig {
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+  }
 }
 
 dependencies {

@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.sp
 import com.ebiondic.designsystem.R
 
 
-val VentiumTypography = Typography(
+val GexTypography = Typography(
   headlineLarge = TextStyle(
     fontFamily = FontFamily(Font(R.font.bold)),
     fontSize = 32.sp

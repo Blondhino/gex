@@ -30,7 +30,7 @@ fun GexTheme(
 ) {
   MaterialTheme(
     colorScheme = if (isSystemInDarkTheme()) DarkColorScheme else LightColorScheme,
-    typography = VentiumTypography,
+    typography = GexTypography,
     content = content
   )
   
