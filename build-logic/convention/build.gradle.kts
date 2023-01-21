@@ -30,6 +30,16 @@ gradlePlugin {
       id = "gex.android.hilt"
       implementationClass = "AndroidHiltConventionPlugin"
     }
+  
+    register("androidLibrary") {
+      id = "gex.android.library"
+      implementationClass = "AndroidLibraryConventionPlugin"
+    }
+  
+    register("androidFeature") {
+      id = "gex.android.feature"
+      implementationClass = "AndroidFeatureConventionPlugin"
+    }
     
   }
 }
