@@ -36,7 +36,7 @@ class SearchViewModel @Inject constructor(
     searchJob = viewModelScope.launch {
       delay(500)
       getRepositorySearchResults(searchTerm)
-        .onSuccess { }
+        .onSuccess { uiState = uiState.copy(repositories = it)}
         .onFailure { }
     }
   }

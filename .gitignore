@@ -31,3 +31,4 @@ local.properties
 /core/model/.gitignore
 /core/network/.gitignore
 /feature/search/.gitignore
+/.idea/inspectionProfiles/Project_Default.xml
