@@ -8,5 +8,8 @@ android {
 }
 
 dependencies {
-
+  implementation(project(":core:data"))
+  implementation(project(":core:model"))
+  implementation(libs.hilt.android)
+  kapt(libs.hilt.compiler)
 }

@@ -1,6 +1,6 @@
 package com.ebiondic.network
 
-import com.ebiondic.network.utils.SafeApiCall
+import com.ebiondic.model.utils.SafeApiCall
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

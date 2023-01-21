@@ -1,8 +1,10 @@
 package com.ebiondic.data
 
+import com.ebiondic.model.convert.mapToListOfGithubRepositoryDtos
 import com.ebiondic.model.dto.GithubRepoDto
+import com.ebiondic.model.utils.SafeApiCall
+import com.ebiondic.model.utils.unknownError
 import com.ebiondic.network.GithubApi
-import com.ebiondic.network.utils.SafeApiCall
 import javax.inject.Inject
 
 class GithubRepoRepositoryImpl @Inject constructor(
@@ -12,7 +14,13 @@ class GithubRepoRepositoryImpl @Inject constructor(
   
   override suspend fun searchGithubRepository(repositoryName: String): Result<List<GithubRepoDto>> {
     safeApiCall { api.searchRepositories(repositoryName) }
-    return Result.success(listOf())
+      .onSuccess {
+        return Result.success(it.mapToListOfGithubRepositoryDtos())
+      }
+      .onFailure {
+        return Result.failure(it)
+      }
+    return unknownError()
   }
   
 }

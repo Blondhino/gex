@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ebiondic.data.GithubRepoRepository
+import com.ebiondic.domain.GetRepositorySearchResultsUseCase
 import com.ebiondic.search.action.SearchScreenEvent
 import com.ebiondic.search.action.SearchScreenEvent.SearchTermChanged
 import com.ebiondic.search.action.SearchScreenUiState
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-  val repository: GithubRepoRepository
+  private val getRepositorySearchResults: GetRepositorySearchResultsUseCase
 ) : ViewModel() {
   var uiState by mutableStateOf(SearchScreenUiState())
   private var searchJob: Job? = null
@@ -35,7 +35,9 @@ class SearchViewModel @Inject constructor(
     searchJob?.cancel()
     searchJob = viewModelScope.launch {
       delay(500)
-      repository.searchGithubRepository(searchTerm)
+      getRepositorySearchResults(searchTerm)
+        .onSuccess { }
+        .onFailure { }
     }
   }
 }

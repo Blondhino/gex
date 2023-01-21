@@ -1,4 +1,4 @@
-package com.ebiondic.network.utils
+package com.ebiondic.model.utils
 
 class SafeApiCall() {
   suspend operator fun <SuccessModel : Any> invoke(

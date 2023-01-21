@@ -1,14 +1,17 @@
 package com.ebiondic.model.response
 
 data class GithubRepositorySearchResponse(
+  val items: List<Repository>
+)
+
+data class Repository(
   val id: Int?,
   val name: String?,
   val owner: Owner?,
   val watchers_count: Int?,
   val forks_count: Int?,
   val open_issues_count: Int?,
-  
-  )
+)
 
 data class Owner(
   val id: Int?,
