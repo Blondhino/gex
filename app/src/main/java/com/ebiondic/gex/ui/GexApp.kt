@@ -7,6 +7,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.ebiondic.gex.navigation.GexNavHost
+import com.ebiondic.search.navigation.searchScreenRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -18,7 +19,7 @@ fun GexApp(
     GexNavHost(
       navHostController = navController,
       modifier = Modifier.padding(it),
-      startDestination = ""
+      startDestination = searchScreenRoute
     )
   }
 }

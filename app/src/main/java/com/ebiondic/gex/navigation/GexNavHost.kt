@@ -4,13 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.ebiondic.search.navigation.searchScreen
+import com.ebiondic.search.navigation.searchScreenRoute
 
 
 @Composable
 fun GexNavHost(
   navHostController: NavHostController,
   modifier: Modifier = Modifier,
-  startDestination: String = ""
+  startDestination: String = searchScreenRoute
 ) {
   NavHost(
     navController = navHostController,
@@ -18,7 +20,7 @@ fun GexNavHost(
     modifier = modifier
   ) {
     with(navHostController) {
-    
+      searchScreen(onRepositorySelected = {})
     }
   }
 }
