@@ -6,7 +6,7 @@ java {
   targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-group = "com.ebiondic.ventium.buildlogic"
+group = "com.ebiondic.gex.buildlogic"
 
 dependencies {
   compileOnly(libs.android.gradlePlugin)
@@ -24,6 +24,11 @@ gradlePlugin {
     register("androidLibraryCompose"){
       id = "gex.android.library.compose"
       implementationClass = "AndroidComposeLibraryConventionPlugin"
+    }
+  
+    register("androidHilt") {
+      id = "gex.android.hilt"
+      implementationClass = "AndroidHiltConventionPlugin"
     }
     
   }

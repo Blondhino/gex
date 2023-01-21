@@ -2,6 +2,7 @@ plugins {
   id("com.android.application")
   id("org.jetbrains.kotlin.android")
   id("gex.android.application.compose")
+  id("gex.android.hilt")
 }
 android {
   defaultConfig {
