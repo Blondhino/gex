@@ -46,11 +46,11 @@ fun SearchAndSort(
       modifier = Modifier
         .fillMaxWidth(),
       verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.spacedBy(smallPadding)
+      horizontalArrangement = Arrangement.SpaceBetween
     ) {
       Row(
         modifier = Modifier
-          .fillMaxWidth(0.9f)
+          .fillMaxWidth(0.85f)
           .clip(RoundedCornerShape(30))
       ) {
         SortCategoryItem(
