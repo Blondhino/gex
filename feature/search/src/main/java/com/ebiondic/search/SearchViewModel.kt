@@ -5,9 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ebiondic.designsystem.component.SortCategory
-import com.ebiondic.designsystem.component.SortDirection
+import com.ebiondic.designsystem.component.ASCENDING
+import com.ebiondic.designsystem.component.DESCENDING
 import com.ebiondic.domain.GetRepositorySearchResultsUseCase
+import com.ebiondic.model.enum.SortCategory
+import com.ebiondic.model.enum.SortDirection
 import com.ebiondic.search.action.SearchScreenEvent
 import com.ebiondic.search.action.SearchScreenEvent.*
 import com.ebiondic.search.action.SearchScreenUiState
@@ -27,35 +29,44 @@ class SearchViewModel @Inject constructor(
   fun onEvent(event: SearchScreenEvent) {
     when (event) {
       is SearchTermChanged -> {
-        uiState = uiState.copy(searchTerm = event.term)
-        performSearch(uiState.searchTerm)
+        updateSearchField(event.term)
+        performSearch()
       }
       is SortCategoryClicked -> {
-        updateActiveSortCategory(event.category)
+        updateActiveSortCategory(event.sortCategory)
+        performSearch()
       }
       is OnSortDirectionClicked -> {
         updateSortDirection()
+        performSearch()
       }
     }
   }
   
+  private fun updateSearchField(term: String) {
+    uiState = uiState.copy(searchTerm = term)
+  }
+  
   private fun updateSortDirection() {
     val newSortDirection =
-      if (uiState.sortDirection == SortDirection.ASCENDING) SortDirection.DESCENDING else SortDirection.ASCENDING
+      if (uiState.sortDirection == ASCENDING) DESCENDING else ASCENDING
     uiState = uiState.copy(sortDirection = newSortDirection)
   }
   
-  private fun updateActiveSortCategory(sortCategory: SortCategory) {
-    val newSortingCategory = if (uiState.activeSortCategory == sortCategory) SortCategory.NONE else sortCategory
-    uiState = uiState.copy(activeSortCategory = newSortingCategory)
+  private fun updateActiveSortCategory(sortCategory: Int) {
+    uiState = uiState.copy(activeSortCategory = sortCategory)
   }
   
-  private fun performSearch(searchTerm: String) {
+  private fun performSearch() {
     searchJob?.cancel()
     searchJob = viewModelScope.launch {
       delay(500)
       uiState = uiState.copy(isLoading = true)
-      getRepositorySearchResults(searchTerm)
+      getRepositorySearchResults(
+        repositoryName = uiState.searchTerm,
+        sortDirection = SortDirection.fromCode(uiState.sortDirection),
+        sortCategory = SortCategory.fromCode(uiState.activeSortCategory)
+      )
         .onSuccess { uiState = uiState.copy(repositories = it) }
         .onFailure { }
       uiState = uiState.copy(isLoading = false)

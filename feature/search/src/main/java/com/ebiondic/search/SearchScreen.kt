@@ -9,7 +9,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ebiondic.designsystem.component.PaginatedRefreshableRail
 import com.ebiondic.designsystem.component.RepositoryItem
 import com.ebiondic.designsystem.component.SearchAndSort
-import com.ebiondic.designsystem.component.SortCategory
 import com.ebiondic.designsystem.theme.mediumPadding
 import com.ebiondic.search.action.SearchScreenEvent
 import com.ebiondic.search.action.SearchScreenUiState
@@ -36,7 +35,7 @@ internal fun SearchScreen(
   modifier: Modifier,
   uiState: SearchScreenUiState,
   onSearchTermChanged: (String) -> Unit,
-  onSortCategorySelected: (SortCategory) -> Unit = { sortCategory -> },
+  onSortCategorySelected: (Int) -> Unit = { },
   onSorDirectionClicked: () -> Unit = {},
   onRepositorySelected: () -> Unit
 ) {

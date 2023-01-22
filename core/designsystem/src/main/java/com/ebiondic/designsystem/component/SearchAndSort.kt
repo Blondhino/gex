@@ -20,11 +20,11 @@ import com.ebiondic.designsystem.theme.smallPadding
 fun SearchAndSort(
   modifier: Modifier = Modifier,
   searchTerm: String,
-  activeSortCategory: SortCategory = SortCategory.NONE,
+  activeSortCategory: Int = STARS,
   onSearchTermChanged: (String) -> Unit,
-  onSortCategorySelected: (SortCategory) -> Unit = { sortCategory -> },
+  onSortCategorySelected: (Int) -> Unit = { },
   onSortDirectionClicked: () -> Unit = {},
-  sortDirection: SortDirection = SortDirection.DESCENDING,
+  sortDirection: Int = DESCENDING,
 ) {
   
   Column(
@@ -56,20 +56,20 @@ fun SearchAndSort(
         SortCategoryItem(
           modifier = Modifier.weight(1f),
           text = stringResource(id = R.string.sort_param_stars),
-          isActive = activeSortCategory == SortCategory.STARS,
-          onSelected = { onSortCategorySelected(SortCategory.STARS) }
+          isActive = activeSortCategory == STARS,
+          onSelected = { onSortCategorySelected(STARS) }
         )
         SortCategoryItem(
           modifier = Modifier.weight(1f),
           text = stringResource(id = R.string.sort_params_forks),
-          isActive = activeSortCategory == SortCategory.FORKS,
-          onSelected = { onSortCategorySelected(SortCategory.FORKS) }
+          isActive = activeSortCategory == FORKS,
+          onSelected = { onSortCategorySelected(FORKS) }
         )
         SortCategoryItem(
           modifier = Modifier.weight(1f),
           text = stringResource(id = R.string.sort_param_updated),
-          isActive = activeSortCategory == SortCategory.UPDATED,
-          onSelected = { onSortCategorySelected(SortCategory.UPDATED) }
+          isActive = activeSortCategory == UPDATED,
+          onSelected = { onSortCategorySelected(UPDATED) }
         )
       }
       
@@ -82,7 +82,6 @@ fun SearchAndSort(
   }
   
 }
-
 
 @Composable
 @Preview

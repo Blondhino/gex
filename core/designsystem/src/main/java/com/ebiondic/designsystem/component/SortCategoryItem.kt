@@ -13,6 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ebiondic.designsystem.theme.smallPadding
 
+const val STARS = 0
+const val FORKS = 1
+const val UPDATED = 2
+
 @Composable
 fun SortCategoryItem(
   modifier: Modifier,
@@ -37,11 +41,4 @@ fun SortCategoryItem(
       style = MaterialTheme.typography.labelMedium.copy(color = textColor)
     )
   }
-}
-
-enum class SortCategory {
-  STARS,
-  FORKS,
-  UPDATED,
-  NONE,
 }

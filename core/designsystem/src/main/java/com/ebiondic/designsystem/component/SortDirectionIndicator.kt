@@ -18,12 +18,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 
+const val ASCENDING = 0
+const val DESCENDING = 1
+
 @Composable
 fun SortDirectionIndicator(
   onSortDirectionClick: () -> Unit = {},
-  sortDirection: SortDirection = SortDirection.DESCENDING
+  sortDirection: Int = ASCENDING
 ) {
-  val rotation by animateFloatAsState(targetValue = if (sortDirection == SortDirection.DESCENDING) 0f else 180f)
+  val rotation by animateFloatAsState(targetValue = if (sortDirection == DESCENDING) 0f else 180f)
   Box(
     modifier = Modifier
       .clip(CircleShape)
@@ -37,7 +40,3 @@ fun SortDirectionIndicator(
   }
 }
 
-enum class SortDirection {
-  ASCENDING,
-  DESCENDING,
-}

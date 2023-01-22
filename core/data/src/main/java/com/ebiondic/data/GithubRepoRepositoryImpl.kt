@@ -12,8 +12,12 @@ class GithubRepoRepositoryImpl @Inject constructor(
   private val safeApiCall: SafeApiCall
 ) : GithubRepoRepository {
   
-  override suspend fun searchGithubRepository(repositoryName: String): Result<List<GithubRepoDto>> {
-    safeApiCall { api.searchRepositories(repositoryName) }
+  override suspend fun searchGithubRepository(
+    repositoryName: String,
+    sortCategory: String,
+    sortDirection: String
+  ): Result<List<GithubRepoDto>> {
+    safeApiCall { api.searchRepositories(repositoryName, sortCategory, sortDirection) }
       .onSuccess {
         return Result.success(it.mapToListOfGithubRepositoryDtos())
       }
