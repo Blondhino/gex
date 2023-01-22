@@ -1,4 +1,8 @@
 <resources>
   <string name="app_name">Gex</string>
   <string name="search_placeholder">Repository name</string>
+  <string name="sort_by_label">Sort By:</string>
+  <string name="sort_param_stars">Stars</string>
+  <string name="sort_params_forks">Forks</string>
+  <string name="sort_param_updated">Updated</string>
 </resources>

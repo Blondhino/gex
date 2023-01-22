@@ -42,8 +42,8 @@ fun <T : Any> PaginatedRefreshableRail(
       verticalArrangement = Arrangement.spacedBy(itemsSpacing)
     ) {
       item {
-        Spacer(Modifier.height(itemsSpacing))
         header()
+        Spacer(Modifier.height(itemsSpacing))
       }
       
       itemsIndexed(items = items) { index, item ->

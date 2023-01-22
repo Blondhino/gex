@@ -1,17 +1,16 @@
 package com.ebiondic.search
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ebiondic.designsystem.component.InputTextField
 import com.ebiondic.designsystem.component.PaginatedRefreshableRail
 import com.ebiondic.designsystem.component.RepositoryItem
+import com.ebiondic.designsystem.component.SearchAndSort
+import com.ebiondic.designsystem.component.SortCategory
 import com.ebiondic.designsystem.theme.mediumPadding
-import com.ebiondic.designsystem.theme.smallPadding
 import com.ebiondic.search.action.SearchScreenEvent
 import com.ebiondic.search.action.SearchScreenUiState
 
@@ -24,7 +23,9 @@ internal fun SearchRoute(
   SearchScreen(
     modifier = modifier,
     uiState = viewModel.uiState,
-    onSearchTermChanged = { viewModel.onEvent(SearchScreenEvent.SearchTermChanged(it)) }
+    onSearchTermChanged = { viewModel.onEvent(SearchScreenEvent.SearchTermChanged(it)) },
+    onSortCategorySelected = { viewModel.onEvent(SearchScreenEvent.SortCategoryClicked(it)) },
+    onSorDirectionClicked = { viewModel.onEvent(SearchScreenEvent.OnSortDirectionClicked) }
   ) {
   
   }
@@ -35,22 +36,31 @@ internal fun SearchScreen(
   modifier: Modifier,
   uiState: SearchScreenUiState,
   onSearchTermChanged: (String) -> Unit,
+  onSortCategorySelected: (SortCategory) -> Unit = { sortCategory -> },
+  onSorDirectionClicked: () -> Unit = {},
   onRepositorySelected: () -> Unit
 ) {
-  Column(modifier = modifier
-    .fillMaxSize()
-    .padding(mediumPadding)) {
-    InputTextField(
-      value = uiState.searchTerm,
-      onValueChange = { onSearchTermChanged(it) },
-      hint = stringResource(R.string.search_placeholder)
-    )
-    
+  Box(
+    modifier = modifier
+      .fillMaxSize()
+      .padding(mediumPadding)
+  ) {
     PaginatedRefreshableRail(
-      isFetching = false,
-      loadMoreData = {  },
+      isFetching = uiState.isLoading,
+      loadMoreData = { },
       items = uiState.repositories,
-      onRefresh = { }) {
+      onRefresh = { },
+      header = {
+        SearchAndSort(
+          searchTerm = uiState.searchTerm,
+          activeSortCategory = uiState.activeSortCategory,
+          sortDirection = uiState.sortDirection,
+          onSearchTermChanged = { onSearchTermChanged(it) },
+          onSortCategorySelected = { onSortCategorySelected(it) },
+          onSortDirectionClicked = { onSorDirectionClicked() }
+        )
+      }
+    ) {
       RepositoryItem(
         repositoryName = it.repositoryName,
         authorName = it.authorName,
