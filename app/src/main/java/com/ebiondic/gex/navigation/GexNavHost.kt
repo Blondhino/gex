@@ -23,7 +23,7 @@ fun GexNavHost(
   ) {
     with(navHostController) {
       searchScreen(
-        onRepositorySelected = { repositoryId -> navigateToDetailsScreen(repositoryId) }
+        onRepositorySelected = { repositoryName, ownerName -> navigateToDetailsScreen(repositoryName, ownerName) }
       )
       detailsScreen()
     }

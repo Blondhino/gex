@@ -8,7 +8,7 @@ fun GithubRepositorySearchResponse.mapToListOfGithubRepositoryDtos(): List<Githu
     GithubRepoDto(
       repositoryId = it.id ?: 0,
       repositoryName = it.name.orEmpty(),
-      authorName = "@" + it.owner?.login.orEmpty(),
+      authorName = it.owner?.login.orEmpty(),
       authorThumbnailImageUrl = it.owner?.avatar_url.orEmpty(),
       numberOfWatchers = it.watchers_count ?: 0,
       numberOfForks = it.forks_count ?: 0,

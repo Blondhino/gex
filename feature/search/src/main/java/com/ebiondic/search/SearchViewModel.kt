@@ -10,6 +10,7 @@ import com.ebiondic.designsystem.component.DESCENDING
 import com.ebiondic.domain.GetRepositorySearchResultsUseCase
 import com.ebiondic.model.enum.SortCategory
 import com.ebiondic.model.enum.SortDirection
+import com.ebiondic.model.navigation.NavigateToDetailsArguments
 import com.ebiondic.search.action.SearchScreenEvent
 import com.ebiondic.search.action.SearchScreenEvent.*
 import com.ebiondic.search.action.SearchScreenUiState
@@ -43,6 +44,14 @@ class SearchViewModel @Inject constructor(
     }
   }
   
+  fun getNavArgumentsForDetails(repositoryId: Int): NavigateToDetailsArguments {
+    val selectedRepository = uiState.repositories.firstOrNull { it.repositoryId == repositoryId }
+    return NavigateToDetailsArguments(
+      repositoryName = selectedRepository?.repositoryName ?: "",
+      ownerName = selectedRepository?.authorName ?: ""
+    )
+  }
+  
   private fun updateSearchField(term: String) {
     uiState = uiState.copy(searchTerm = term)
   }
@@ -67,7 +76,9 @@ class SearchViewModel @Inject constructor(
         sortDirection = SortDirection.fromCode(uiState.sortDirection),
         sortCategory = SortCategory.fromCode(uiState.activeSortCategory)
       )
-        .onSuccess { uiState = uiState.copy(repositories = it) }
+        .onSuccess {
+          uiState = uiState.copy(repositories = it)
+        }
         .onFailure { }
       uiState = uiState.copy(isLoading = false)
     }

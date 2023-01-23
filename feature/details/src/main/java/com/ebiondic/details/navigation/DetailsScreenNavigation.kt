@@ -11,23 +11,29 @@ import com.ebiondic.common.decoder.StringDecoder
 import com.ebiondic.details.DetailsRoute
 
 const val detailsScreenRoute = "details_screen"
-internal const val repositoryIdArg = "repositoryId"
+internal const val repositoryNameArg = "repositoryName"
+internal const val ownerNameArg = "ownerName"
 
-internal class DetailsArgs(val repositoryId: String) {
+internal class DetailsArgs(val repositoryName: String, val ownerName: String) {
   constructor(savedStateHandle: SavedStateHandle, stringDecoder: StringDecoder) :
-    this(stringDecoder.decodeString(checkNotNull(savedStateHandle[repositoryIdArg])))
+    this(
+      repositoryName = stringDecoder.decodeString(checkNotNull(savedStateHandle[repositoryNameArg])),
+      ownerName = stringDecoder.decodeString(checkNotNull(savedStateHandle[ownerNameArg])),
+    )
 }
 
-fun NavController.navigateToDetailsScreen(repositoryId: Int) {
-  val encodedString = Uri.encode(repositoryId.toString())
-  this.navigate("$detailsScreenRoute/$encodedString")
+fun NavController.navigateToDetailsScreen(repositoryName: String, ownerName: String) {
+  val encodedStringRepositoryName = Uri.encode(repositoryName)
+  val encodedStringOwnerName = Uri.encode(ownerName)
+  this.navigate("$detailsScreenRoute/$encodedStringRepositoryName/$encodedStringOwnerName")
 }
 
 fun NavGraphBuilder.detailsScreen() {
   composable(
-    route = "$detailsScreenRoute/{$repositoryIdArg}",
+    route = "$detailsScreenRoute/{$repositoryNameArg}/{$ownerNameArg}",
     arguments = listOf(
-      navArgument(repositoryIdArg) { type = NavType.StringType }
+      navArgument(repositoryNameArg) { type = NavType.StringType },
+      navArgument(ownerNameArg) { type = NavType.StringType }
     )
   ) {
     DetailsRoute()

@@ -17,7 +17,7 @@ import com.ebiondic.search.action.SearchScreenUiState
 internal fun SearchRoute(
   modifier: Modifier = Modifier,
   viewModel: SearchViewModel = hiltViewModel(),
-  onRepositorySelected: (repositoryId: Int) -> Unit
+  onRepositorySelected: (repositoryName: String, ownerName: String) -> Unit
 ) {
   SearchScreen(
     modifier = modifier,
@@ -25,7 +25,10 @@ internal fun SearchRoute(
     onSearchTermChanged = { viewModel.onEvent(SearchScreenEvent.SearchTermChanged(it)) },
     onSortCategorySelected = { viewModel.onEvent(SearchScreenEvent.SortCategoryClicked(it)) },
     onSorDirectionClicked = { viewModel.onEvent(SearchScreenEvent.OnSortDirectionClicked) },
-    onRepositorySelected = { onRepositorySelected(it) }
+    onRepositorySelected = {
+      val arguments = viewModel.getNavArgumentsForDetails(it)
+      onRepositorySelected(arguments.repositoryName, arguments.ownerName)
+    }
   )
 }
 

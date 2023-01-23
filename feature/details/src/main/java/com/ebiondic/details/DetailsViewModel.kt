@@ -21,7 +21,7 @@ class DetailsViewModel @Inject constructor(
   private val detailsArgs: DetailsArgs = DetailsArgs(savedStateHandle, stringDecoder)
   
   fun getRepo() {
-    Log.d("repositoryId", detailsArgs.repositoryId)
+    Log.d("repositoryDetails", "${detailsArgs.repositoryName} ${detailsArgs.ownerName}" )
   }
   
 }
