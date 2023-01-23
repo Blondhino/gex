@@ -6,6 +6,7 @@ import com.ebiondic.model.ui.GithubRepo
 fun List<GithubRepoDto>.mapToListOfGithubRepositories(): List<GithubRepo> {
   return this.map {
     GithubRepo(
+      repositoryId = it.repositoryId,
       repositoryName = it.repositoryName,
       authorName = it.authorName,
       authorThumbnailImageUrl = it.authorThumbnailImageUrl,

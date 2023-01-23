@@ -23,4 +23,5 @@ include(":core:domain")
 include(":core:model")
 include(":core:network")
 
+include(":feature:details")
 include(":feature:search")

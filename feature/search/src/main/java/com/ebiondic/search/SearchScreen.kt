@@ -17,17 +17,16 @@ import com.ebiondic.search.action.SearchScreenUiState
 internal fun SearchRoute(
   modifier: Modifier = Modifier,
   viewModel: SearchViewModel = hiltViewModel(),
-  onRepositorySelected: () -> Unit
+  onRepositorySelected: (repositoryId: Int) -> Unit
 ) {
   SearchScreen(
     modifier = modifier,
     uiState = viewModel.uiState,
     onSearchTermChanged = { viewModel.onEvent(SearchScreenEvent.SearchTermChanged(it)) },
     onSortCategorySelected = { viewModel.onEvent(SearchScreenEvent.SortCategoryClicked(it)) },
-    onSorDirectionClicked = { viewModel.onEvent(SearchScreenEvent.OnSortDirectionClicked) }
-  ) {
-  
-  }
+    onSorDirectionClicked = { viewModel.onEvent(SearchScreenEvent.OnSortDirectionClicked) },
+    onRepositorySelected = { onRepositorySelected(it) }
+  )
 }
 
 @Composable
@@ -37,7 +36,7 @@ internal fun SearchScreen(
   onSearchTermChanged: (String) -> Unit,
   onSortCategorySelected: (Int) -> Unit = { },
   onSorDirectionClicked: () -> Unit = {},
-  onRepositorySelected: () -> Unit
+  onRepositorySelected: (id: Int) -> Unit
 ) {
   Box(
     modifier = modifier
@@ -61,12 +60,14 @@ internal fun SearchScreen(
       }
     ) {
       RepositoryItem(
+        repositoryId = it.repositoryId,
         repositoryName = it.repositoryName,
         authorName = it.authorName,
         authorThumbnailImageUrl = it.authorThumbnailImageUrl,
         numberOfWatchers = it.numberOfWatchers,
         numberOfForks = it.numberOfForks,
-        numberOfIssues = it.numberOfIssues
+        numberOfIssues = it.numberOfIssues,
+        onItemClicked = { repositoryId -> onRepositorySelected(repositoryId) }
       )
     }
   }
