@@ -1,6 +1,7 @@
 package com.ebiondic.designsystem.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,8 +18,8 @@ fun RepositoryDetailsHeader(
   modifier: Modifier = Modifier,
   repositoryName: String,
   authorProfileImageUrl: String,
-  authorOnlineProfileUrl: String,
   authorName: String,
+  onAuthorNameClicked: () -> Unit = {}
 ) {
   
   Box(modifier = modifier.fillMaxWidth()) {
@@ -58,7 +59,8 @@ fun RepositoryDetailsHeader(
         )
         Text(
           text = authorName,
-          style = MaterialTheme.typography.labelLarge.copy(color = MaterialTheme.colorScheme.secondary)
+          style = MaterialTheme.typography.labelLarge.copy(color = MaterialTheme.colorScheme.secondary),
+          modifier = Modifier.clickable { onAuthorNameClicked() }
         )
       }
     }

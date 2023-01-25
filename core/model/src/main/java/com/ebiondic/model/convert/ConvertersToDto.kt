@@ -25,7 +25,7 @@ fun GithubRepositoryDetailsResponse.mapToGithubRepositoryDetailsDto(): GithubRep
     authorId = this.owner?.id ?: 0,
     authorName = this.owner?.login.orEmpty(),
     authorThumbnailImageUrl = this.owner?.avatar_url.orEmpty(),
-    authorOnlineProfileUrl = this.owner?.url.orEmpty(),
+    authorOnlineProfileUrl = this.owner?.html_url.orEmpty(),
     repositoryDescription = this.description.orEmpty(),
     repositoryCreationDate = this.created_at.orEmpty(),
     repositoryLastModificationDate = this.updated_at.orEmpty(),

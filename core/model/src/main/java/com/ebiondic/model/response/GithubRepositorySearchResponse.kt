@@ -17,5 +17,5 @@ data class Owner(
   val id: Int?,
   val login: String?,
   val avatar_url: String?,
-  val url: String?
+  val html_url: String?
 )

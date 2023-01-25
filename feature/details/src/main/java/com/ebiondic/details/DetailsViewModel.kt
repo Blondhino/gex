@@ -1,5 +1,7 @@
 package com.ebiondic.details
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -30,5 +32,14 @@ class DetailsViewModel @Inject constructor(
       }
       .onFailure { }
   }
+  
+  fun getIntentForOpeningAuthorOnlineProfile(): Intent {
+    return Intent(Intent.ACTION_VIEW, Uri.parse(uiState.details?.authorOnlineProfileUrl))
+  }
+  
+  fun getIntentForOpeningProjectOnlinePage(): Intent {
+    return Intent(Intent.ACTION_VIEW, Uri.parse(uiState.details?.repositoryOnlineDetails))
+  }
+  
   
 }
