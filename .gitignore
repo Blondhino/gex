@@ -32,3 +32,6 @@ local.properties
 /core/network/.gitignore
 /feature/search/.gitignore
 /.idea/inspectionProfiles/Project_Default.xml
+/feature/details/.gitignore
+/feature/details/consumer-rules.pro
+/feature/details/proguard-rules.pro

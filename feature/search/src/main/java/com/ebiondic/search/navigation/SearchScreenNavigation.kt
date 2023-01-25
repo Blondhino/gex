@@ -12,11 +12,11 @@ fun NavController.navigateToSearchScreen() {
 }
 
 fun NavGraphBuilder.searchScreen(
-  onRepositorySelected: () -> Unit
+  onRepositorySelected: (repositoryName: String, ownerName: String) -> Unit
 ) {
   composable(searchScreenRoute) {
     SearchRoute(
-      onRepositorySelected = {}
+      onRepositorySelected = { repositoryName, ownerName -> onRepositorySelected(repositoryName, ownerName) }
     )
   }
 }

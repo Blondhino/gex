@@ -1,6 +1,7 @@
 package com.ebiondic.designsystem.component
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
@@ -19,15 +20,19 @@ import com.ebiondic.designsystem.theme.smallPadding
 @Composable
 fun RepositoryItem(
   modifier: Modifier = Modifier,
+  repositoryId: Int,
   repositoryName: String,
   authorName: String,
   authorThumbnailImageUrl: String,
   numberOfWatchers: Int,
   numberOfForks: Int,
   numberOfIssues: Int,
+  onItemClicked: (repositoryId: Int) -> Unit = {}
 ) {
   Row(
-    modifier = modifier.fillMaxWidth(),
+    modifier = modifier
+      .fillMaxWidth()
+      .clickable { onItemClicked(repositoryId) },
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(largePadding)
   ) {
