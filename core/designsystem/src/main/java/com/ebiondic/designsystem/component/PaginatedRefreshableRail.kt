@@ -24,7 +24,7 @@ fun <T : Any> PaginatedRefreshableRail(
   items: List<T> = listOf(),
   isEndReached: Boolean = false,
   itemsSpacing: Dp = 20.dp,
-  paginateAfterPercentageScrolled: Double = 0.8,
+  paginateAfterPercentageScrolled: Double = 0.5,
   loadMoreData: () -> Unit,
   onRefresh: () -> Unit,
   header: @Composable () -> Unit = {},

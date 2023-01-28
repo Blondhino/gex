@@ -9,7 +9,8 @@ interface GithubRepoRepository {
   suspend fun searchGithubRepository(
     repositoryName: String,
     sortCategory: String = SortCategory.NONE.apiName,
-    sortDirection: String = SortDirection.DESCENDING.apiName
+    sortDirection: String = SortDirection.DESCENDING.apiName,
+    page: Int = 0
   ): Result<List<GithubRepoDto>>
   
   suspend fun getGithubRepositoryDetails(repositoryName: String, ownerName: String): Result<GithubRepositoryDetailsDto>

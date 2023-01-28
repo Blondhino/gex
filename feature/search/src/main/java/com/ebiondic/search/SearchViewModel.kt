@@ -10,6 +10,9 @@ import com.ebiondic.designsystem.component.DESCENDING
 import com.ebiondic.domain.GetRepositorySearchResultsUseCase
 import com.ebiondic.model.enum.SortCategory
 import com.ebiondic.model.enum.SortDirection
+import com.ebiondic.model.exceptions.EmptySearch
+import com.ebiondic.model.exceptions.EndReached
+import com.ebiondic.model.exceptions.NoResultsFound
 import com.ebiondic.model.navigation.NavigateToDetailsArguments
 import com.ebiondic.search.action.SearchScreenEvent
 import com.ebiondic.search.action.SearchScreenEvent.*
@@ -41,6 +44,13 @@ class SearchViewModel @Inject constructor(
         updateSortDirection()
         performSearch()
       }
+      is OnLoadMoreData -> {
+        performSearch(isNewSearch = false)
+      }
+      is OnRefresh -> {
+        uiState = uiState.copy(isRefreshingIndicatorVisible = true)
+        performSearch()
+      }
     }
   }
   
@@ -66,21 +76,49 @@ class SearchViewModel @Inject constructor(
     uiState = uiState.copy(activeSortCategory = sortCategory)
   }
   
-  private fun performSearch() {
+  private fun performSearch(isNewSearch: Boolean = true) {
     searchJob?.cancel()
     searchJob = viewModelScope.launch {
       delay(500)
-      uiState = uiState.copy(isLoading = true)
+      uiState = uiState.copy(
+        isLoading = true,
+        isRefreshingIndicatorVisible = uiState.isRefreshingIndicatorVisible
+      )
       getRepositorySearchResults(
         repositoryName = uiState.searchTerm,
+        sortCategory = SortCategory.fromCode(uiState.activeSortCategory),
         sortDirection = SortDirection.fromCode(uiState.sortDirection),
-        sortCategory = SortCategory.fromCode(uiState.activeSortCategory)
+        isNewSearch = isNewSearch
       )
         .onSuccess {
-          uiState = uiState.copy(repositories = it)
+          uiState = uiState.copy(
+            repositories = it,
+            isEndReached = false,
+            noResultsFound = false,
+            isSearchEmpty = false
+          )
         }
-        .onFailure { }
-      uiState = uiState.copy(isLoading = false)
+        .onFailure {
+          when (it) {
+            is EndReached -> {
+              uiState = uiState.copy(isEndReached = true)
+            }
+            is NoResultsFound -> {
+              uiState = uiState.copy(noResultsFound = true, isSearchEmpty = false)
+            }
+            is EmptySearch -> {
+              uiState = uiState.copy(
+                isSearchEmpty = true,
+                repositories = listOf(),
+                noResultsFound = false,
+              )
+            }
+            else -> {
+              
+            }
+          }
+        }
+      uiState = uiState.copy(isLoading = false, isRefreshingIndicatorVisible = false)
     }
   }
 }
