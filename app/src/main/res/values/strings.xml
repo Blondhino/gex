@@ -6,4 +6,5 @@
   <string name="sort_params_forks">Forks</string>
   <string name="sort_param_updated">Updated</string>
   <string name="visit_project_online_button_title">Visit project online</string>
+  <string name="upgrade_to_pro_message">Please upgrade to pro version</string>
 </resources>

@@ -15,6 +15,24 @@ android {
     }
   }
   
+  flavorDimensions += "version"
+  productFlavors {
+    
+    create("free"){
+      dimension = "version"
+      applicationIdSuffix = ".free"
+      versionNameSuffix = "-free"
+      
+    }
+    
+    create("pro"){
+      dimension = "version"
+      applicationIdSuffix = ".pro"
+      versionNameSuffix = "-pro"
+    }
+    
+  }
+  
   buildTypes {
     val debug by getting {
       applicationIdSuffix = ".debug"

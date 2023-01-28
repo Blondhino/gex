@@ -1,5 +1,8 @@
 package com.ebiondic.model.response
 
+import androidx.annotation.Keep
+
+@Keep
 data class GithubRepositoryDetailsResponse(
   val name: String?,
   val owner: Owner?,

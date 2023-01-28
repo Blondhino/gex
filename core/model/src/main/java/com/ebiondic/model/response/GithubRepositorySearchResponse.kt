@@ -1,9 +1,13 @@
 package com.ebiondic.model.response
 
+import androidx.annotation.Keep
+
+@Keep
 data class GithubRepositorySearchResponse(
   val items: List<Repository>
 )
 
+@Keep
 data class Repository(
   val id: Int?,
   val name: String?,
@@ -13,6 +17,7 @@ data class Repository(
   val open_issues_count: Int?,
 )
 
+@Keep
 data class Owner(
   val id: Int?,
   val login: String?,
