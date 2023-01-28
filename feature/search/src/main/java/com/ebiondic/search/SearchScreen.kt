@@ -3,8 +3,11 @@ package com.ebiondic.search
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ebiondic.designsystem.component.PaginatedRefreshableRail
 import com.ebiondic.designsystem.component.RepositoryItem
@@ -25,6 +28,8 @@ internal fun SearchRoute(
     onSearchTermChanged = { viewModel.onEvent(SearchScreenEvent.SearchTermChanged(it)) },
     onSortCategorySelected = { viewModel.onEvent(SearchScreenEvent.SortCategoryClicked(it)) },
     onSorDirectionClicked = { viewModel.onEvent(SearchScreenEvent.OnSortDirectionClicked) },
+    onLoadMoreData = { viewModel.onEvent(SearchScreenEvent.OnLoadMoreData) },
+    onRefresh = { viewModel.onEvent(SearchScreenEvent.OnRefresh) },
     onRepositorySelected = {
       val arguments = viewModel.getNavArgumentsForDetails(it)
       onRepositorySelected(arguments.repositoryName, arguments.ownerName)
@@ -39,7 +44,9 @@ internal fun SearchScreen(
   onSearchTermChanged: (String) -> Unit,
   onSortCategorySelected: (Int) -> Unit = { },
   onSorDirectionClicked: () -> Unit = {},
-  onRepositorySelected: (id: Int) -> Unit
+  onRepositorySelected: (id: Int) -> Unit,
+  onLoadMoreData: () -> Unit = {},
+  onRefresh: () -> Unit = {},
 ) {
   Box(
     modifier = modifier
@@ -48,9 +55,11 @@ internal fun SearchScreen(
   ) {
     PaginatedRefreshableRail(
       isFetching = uiState.isLoading,
-      loadMoreData = { },
+      loadMoreData = { onLoadMoreData() },
       items = uiState.repositories,
-      onRefresh = { },
+      isRefreshIndicatorVisible = uiState.isRefreshingIndicatorVisible,
+      isEndReached = uiState.isEndReached,
+      onRefresh = { onRefresh() },
       header = {
         SearchAndSort(
           searchTerm = uiState.searchTerm,
@@ -73,5 +82,13 @@ internal fun SearchScreen(
         onItemClicked = { repositoryId -> onRepositorySelected(repositoryId) }
       )
     }
+    if (uiState.noResultsFound) {
+      Text(stringResource(R.string.no_results_found_message), modifier = Modifier.align(Alignment.Center))
+    }
+    
+    if (uiState.isSearchEmpty) {
+      Text(stringResource(R.string.empty_search_message), modifier = Modifier.align(Alignment.Center))
+    }
+    
   }
 }

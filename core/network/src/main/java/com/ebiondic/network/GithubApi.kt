@@ -12,12 +12,13 @@ interface GithubApi {
   suspend fun searchRepositories(
     @Query("q") repositoryName: String,
     @Query("sort") sortCategory: String,
-    @Query("order") sortDirection: String
+    @Query("order") sortDirection: String,
+    @Query("page") page: Int
   ): GithubRepositorySearchResponse
   
   @GET("repos/{ownerName}/{repositoryName}")
   suspend fun getGithubRepositoryDetails(
-    @Path("repositoryName") repositoryName : String,
-    @Path("ownerName") ownerName : String,
+    @Path("repositoryName") repositoryName: String,
+    @Path("ownerName") ownerName: String,
   ): GithubRepositoryDetailsResponse
 }
