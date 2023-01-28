@@ -1,4 +1,10 @@
 plugins {
-  id("kotlin")
+  id("gex.android.library")
 }
-dependencies {}
+android {
+  namespace = "com.ebiondc.model"
+}
+
+dependencies {
+  implementation("androidx.annotation:annotation:1.3.0")
+}

@@ -16,12 +16,12 @@ val DarkColorScheme = darkColorScheme(
 )
 
 val LightColorScheme = lightColorScheme(
-  primary = BlackNight,
-  onPrimary = LavenderBlush,
+  primary = LavenderBlush,
+  onPrimary = BlackNight,
   secondary = Razzmatazz,
   onSecondary = ShadyLady,
   surface = Scorpion,
-  background = BlackNight
+  background = LavenderBlush
 )
 
 @Composable

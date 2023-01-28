@@ -2,6 +2,7 @@ package com.ebiondic.gex.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.ebiondic.details.navigation.detailsScreen
@@ -16,6 +17,7 @@ fun GexNavHost(
   modifier: Modifier = Modifier,
   startDestination: String = searchScreenRoute
 ) {
+  val context = LocalContext.current
   NavHost(
     navController = navHostController,
     startDestination = startDestination,
@@ -23,7 +25,7 @@ fun GexNavHost(
   ) {
     with(navHostController) {
       searchScreen(
-        onRepositorySelected = { repositoryName, ownerName -> navigateToDetailsScreen(repositoryName, ownerName) }
+        onRepositorySelected = { repositoryName, repositoryOwner -> navigateToDetailsScreen(repositoryName, repositoryOwner) }
       )
       detailsScreen()
     }
