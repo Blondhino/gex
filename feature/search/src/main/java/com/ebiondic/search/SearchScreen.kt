@@ -9,6 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ebiondic.designsystem.R.*
+import com.ebiondic.designsystem.component.Hint
 import com.ebiondic.designsystem.component.PaginatedRefreshableRail
 import com.ebiondic.designsystem.component.RepositoryItem
 import com.ebiondic.designsystem.component.SearchAndSort
@@ -83,11 +85,19 @@ internal fun SearchScreen(
       )
     }
     if (uiState.noResultsFound) {
-      Text(stringResource(R.string.no_results_found_message), modifier = Modifier.align(Alignment.Center))
+      Hint(
+        modifier = Modifier.align(Alignment.Center),
+        image = drawable.ic_no_results,
+        message = R.string.no_results_found_message
+      )
     }
     
     if (uiState.isSearchEmpty) {
-      Text(stringResource(R.string.empty_search_message), modifier = Modifier.align(Alignment.Center))
+      Hint(
+        modifier = Modifier.align(Alignment.Center),
+        image = drawable.ic_empty_search,
+        message = R.string.empty_search_message
+      )
     }
     
   }
