@@ -7,4 +7,7 @@ android {
   namespace = "com.ebiondic.common"
 }
 
-dependencies {}
+dependencies {
+  implementation(libs.kotlinx.coroutines.android)
+  testImplementation(project(":core:testing"))
+}

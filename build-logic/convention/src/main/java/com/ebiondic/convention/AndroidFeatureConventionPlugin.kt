@@ -14,7 +14,11 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         apply("gex.android.hilt")
       }
       
-      extensions.configure<LibraryExtension> {}
+      extensions.configure<LibraryExtension> {
+        defaultConfig {
+          testInstrumentationRunner = "com.ebiondic.testing.GexTestRunner"
+        }
+      }
       
       val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
       
@@ -22,7 +26,11 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         add("implementation", project(":core:designsystem"))
         add("implementation", project(":core:domain"))
         add("implementation", project(":core:model"))
+        add("implementation", project(":core:data"))
         add("implementation", project(":core:common"))
+        
+        add("testImplementation", project(":core:testing"))
+        add("androidTestImplementation", project(":core:testing"))
         
         add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
         add("implementation", libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
