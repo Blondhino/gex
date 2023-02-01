@@ -5,12 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ebiondic.common.SEARCH_DEBOUNCE_MILLIS
 import com.ebiondic.designsystem.component.ASCENDING
 import com.ebiondic.designsystem.component.DESCENDING
 import com.ebiondic.domain.GetRepositorySearchResultsUseCase
 import com.ebiondic.model.enum.SortCategory
 import com.ebiondic.model.enum.SortDirection
-import com.ebiondic.model.exceptions.EmptySearch
 import com.ebiondic.model.exceptions.EndReached
 import com.ebiondic.model.exceptions.NoResultsFound
 import com.ebiondic.model.navigation.NavigateToDetailsArguments
@@ -79,46 +79,45 @@ class SearchViewModel @Inject constructor(
   private fun performSearch(isNewSearch: Boolean = true) {
     searchJob?.cancel()
     searchJob = viewModelScope.launch {
-      delay(500)
-      uiState = uiState.copy(
-        isLoading = true,
-        isRefreshingIndicatorVisible = uiState.isRefreshingIndicatorVisible
-      )
-      getRepositorySearchResults(
-        repositoryName = uiState.searchTerm,
-        sortCategory = SortCategory.fromCode(uiState.activeSortCategory),
-        sortDirection = SortDirection.fromCode(uiState.sortDirection),
-        isNewSearch = isNewSearch
-      )
-        .onSuccess {
-          uiState = uiState.copy(
-            repositories = it,
-            isEndReached = false,
-            noResultsFound = false,
-            isSearchEmpty = false
-          )
-        }
-        .onFailure {
-          when (it) {
-            is EndReached -> {
-              uiState = uiState.copy(isEndReached = true)
-            }
-            is NoResultsFound -> {
-              uiState = uiState.copy(noResultsFound = true, isSearchEmpty = false)
-            }
-            is EmptySearch -> {
-              uiState = uiState.copy(
-                isSearchEmpty = true,
-                repositories = listOf(),
-                noResultsFound = false,
-              )
-            }
-            else -> {
-              
+      if (uiState.searchTerm.isNotEmpty()) {
+        delay(SEARCH_DEBOUNCE_MILLIS)
+        uiState = uiState.copy(
+          isLoading = true,
+          isRefreshingIndicatorVisible = uiState.isRefreshingIndicatorVisible
+        )
+        getRepositorySearchResults(
+          repositoryName = uiState.searchTerm,
+          sortCategory = SortCategory.fromCode(uiState.activeSortCategory),
+          sortDirection = SortDirection.fromCode(uiState.sortDirection),
+          isNewSearch = isNewSearch
+        )
+          .onSuccess {
+            uiState = uiState.copy(
+              repositories = it,
+              isEndReached = false,
+              noResultsFound = false,
+              isSearchEmpty = false
+            )
+          }
+          .onFailure {
+            when (it) {
+              is EndReached -> {
+                uiState = uiState.copy(isEndReached = true)
+              }
+              is NoResultsFound -> {
+                uiState = uiState.copy(noResultsFound = true, isSearchEmpty = false)
+              }
+              else -> {}
             }
           }
-        }
-      uiState = uiState.copy(isLoading = false, isRefreshingIndicatorVisible = false)
+        uiState = uiState.copy(isLoading = false, isRefreshingIndicatorVisible = false)
+      } else {
+        uiState = uiState.copy(
+          isSearchEmpty = true,
+          repositories = listOf(),
+          noResultsFound = false,
+        )
+      }
     }
   }
 }
