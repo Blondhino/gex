@@ -59,6 +59,7 @@ internal fun SearchScreen(
       isFetching = uiState.isLoading,
       loadMoreData = { onLoadMoreData() },
       items = uiState.repositories,
+      isEnabledScrollToTopButton = true,
       isRefreshIndicatorVisible = uiState.isRefreshingIndicatorVisible,
       isEndReached = uiState.isEndReached,
       onRefresh = { onRefresh() },
