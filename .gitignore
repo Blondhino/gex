@@ -35,3 +35,5 @@ local.properties
 /feature/details/.gitignore
 /feature/details/consumer-rules.pro
 /feature/details/proguard-rules.pro
+/core/testing/.gitignore
+/core/testing/consumer-rules.pro

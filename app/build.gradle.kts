@@ -18,14 +18,14 @@ android {
   flavorDimensions += "version"
   productFlavors {
     
-    create("free"){
+    create("free") {
       dimension = "version"
       applicationIdSuffix = ".free"
       versionNameSuffix = "-free"
       
     }
     
-    create("pro"){
+    create("pro") {
       dimension = "version"
       applicationIdSuffix = ".pro"
       versionNameSuffix = "-pro"

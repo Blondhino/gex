@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,7 +25,9 @@ internal fun DetailsRoute(
 ) {
   val context = LocalContext.current
   
-  viewModel.getRepo()
+  LaunchedEffect(key1 = context){
+    viewModel.getRepo()
+  }
   DetailsScreen(
     modifier = modifier,
     uiState = viewModel.uiState,
