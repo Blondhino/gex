@@ -26,11 +26,15 @@ class DetailsViewModel @Inject constructor(
   private val detailsArgs: DetailsArgs = DetailsArgs(savedStateHandle, stringDecoder)
   
   fun getRepo() = viewModelScope.launch {
+    uiState = uiState.copy(isLoading = true)
     getRepositoryDetailsUseCase(repositoryName = detailsArgs.repositoryName, ownerName = detailsArgs.ownerName)
       .onSuccess {
         uiState = uiState.copy(details = it)
       }
-      .onFailure { }
+      .onFailure {
+        uiState = uiState.copy(screenError = it.message.orEmpty())
+      }
+    uiState = uiState.copy(isLoading = false)
   }
   
   fun getIntentForOpeningAuthorOnlineProfile(): Intent {

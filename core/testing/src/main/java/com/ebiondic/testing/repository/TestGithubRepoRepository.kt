@@ -34,6 +34,22 @@ class TestGithubRepoRepository : GithubRepoRepository {
       numberOfWatchers = 0,
     ),
   )
+  private val fakeRepositoryDetailsResponse = GithubRepositoryDetailsDto(
+    name = "repository_name",
+    authorId = 1,
+    authorName = "author_name",
+    authorThumbnailImageUrl = "fake",
+    authorOnlineProfileUrl = "fake",
+    repositoryDescription = "fake",
+    repositoryCreationDate = "fake",
+    repositoryLastModificationDate = "fake",
+    language = "fake",
+    repositoryOnlineDetails = "fake",
+    forks = 1,
+    watchers = 1,
+    issues = 1,
+    stars = 1,
+  )
   
   fun manageRepositorySearchSettings(
     shouldReturnNoResultsError: Boolean,
@@ -43,6 +59,12 @@ class TestGithubRepoRepository : GithubRepoRepository {
     repositoryReturnsNoResults = shouldReturnNoResultsError
     repositoryReturnsUnknownError = shouldReturnUnknownError
     repositoryReturnsEndReachedError = shouldReturnEndReachedError
+  }
+  
+  fun manageRepositoryDetailsSettings(
+    shouldReturnUnknownError: Boolean,
+  ) {
+    repositoryReturnsUnknownError = shouldReturnUnknownError
   }
   
   override suspend fun searchGithubRepository(
@@ -64,7 +86,13 @@ class TestGithubRepoRepository : GithubRepoRepository {
     return@withContext Result.success(fakeSearchResultsResponse)
   }
   
-  override suspend fun getGithubRepositoryDetails(repositoryName: String, ownerName: String): Result<GithubRepositoryDetailsDto> {
-    return unknownError()
+  override suspend fun getGithubRepositoryDetails(repositoryName: String, ownerName: String):
+    Result<GithubRepositoryDetailsDto> = withContext(Dispatchers.Unconfined) {
+    if (repositoryReturnsUnknownError) {
+      return@withContext unknownError()
+    } else {
+      delay(100)
+      return@withContext Result.success(fakeRepositoryDetailsResponse)
+    }
   }
 }
