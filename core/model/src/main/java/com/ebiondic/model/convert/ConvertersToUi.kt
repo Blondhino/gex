@@ -12,6 +12,7 @@ fun List<GithubRepoDto>.mapToListOfGithubRepositories(): List<GithubRepo> {
       repositoryName = it.repositoryName,
       authorName = it.authorName,
       authorThumbnailImageUrl = it.authorThumbnailImageUrl,
+      authorOnlineProfileUrl = it.authorOnlineProfileUrl,
       numberOfWatchers = it.numberOfWatchers,
       numberOfIssues = it.numberOfIssues,
       numberOfForks = it.numberOfForks

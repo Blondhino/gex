@@ -6,8 +6,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ebiondic.common.SEARCH_DEBOUNCE_MILLIS
+import com.ebiondic.common.WebUrlLauncher
 import com.ebiondic.designsystem.component.ASCENDING
 import com.ebiondic.designsystem.component.DESCENDING
+import com.ebiondic.domain.GetNavigationArgumentsForDetailsUseCase
 import com.ebiondic.domain.GetRepositorySearchResultsUseCase
 import com.ebiondic.model.enum.SortCategory
 import com.ebiondic.model.enum.SortDirection
@@ -25,7 +27,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-  private val getRepositorySearchResults: GetRepositorySearchResultsUseCase
+  private val getRepositorySearchResults: GetRepositorySearchResultsUseCase,
+  private val getNavigationArgumentsForDetails: GetNavigationArgumentsForDetailsUseCase,
+  private val launchWebUrl: WebUrlLauncher
 ) : ViewModel() {
   var uiState by mutableStateOf(SearchScreenUiState())
   private var searchJob: Job? = null
@@ -33,15 +37,15 @@ class SearchViewModel @Inject constructor(
   fun onEvent(event: SearchScreenEvent) {
     when (event) {
       is SearchTermChanged -> {
-        updateSearchField(event.term)
+        uiState = uiState.copy(searchTerm = event.term)
         performSearch()
       }
       is SortCategoryClicked -> {
-        updateActiveSortCategory(event.sortCategory)
+        uiState = uiState.copy(activeSortCategory = event.sortCategory)
         performSearch()
       }
       is OnSortDirectionClicked -> {
-        updateSortDirection()
+        uiState = uiState.copy(sortDirection = if (uiState.sortDirection == ASCENDING) DESCENDING else ASCENDING)
         performSearch()
       }
       is OnLoadMoreData -> {
@@ -51,29 +55,17 @@ class SearchViewModel @Inject constructor(
         uiState = uiState.copy(isRefreshingIndicatorVisible = true)
         performSearch()
       }
+      is OnUserClicked -> {
+        launchWebUrl(event.profileUrl)
+      }
     }
   }
   
   fun getNavArgumentsForDetails(repositoryId: Int): NavigateToDetailsArguments {
-    val selectedRepository = uiState.repositories.firstOrNull { it.repositoryId == repositoryId }
-    return NavigateToDetailsArguments(
-      repositoryName = selectedRepository?.repositoryName ?: "",
-      ownerName = selectedRepository?.authorName ?: ""
+    return getNavigationArgumentsForDetails(
+      repositories = uiState.repositories,
+      repositoryId = repositoryId
     )
-  }
-  
-  private fun updateSearchField(term: String) {
-    uiState = uiState.copy(searchTerm = term)
-  }
-  
-  private fun updateSortDirection() {
-    val newSortDirection =
-      if (uiState.sortDirection == ASCENDING) DESCENDING else ASCENDING
-    uiState = uiState.copy(sortDirection = newSortDirection)
-  }
-  
-  private fun updateActiveSortCategory(sortCategory: Int) {
-    uiState = uiState.copy(activeSortCategory = sortCategory)
   }
   
   private fun performSearch(isNewSearch: Boolean = true) {
@@ -82,7 +74,8 @@ class SearchViewModel @Inject constructor(
       if (uiState.searchTerm.isNotEmpty()) {
         delay(SEARCH_DEBOUNCE_MILLIS)
         uiState = uiState.copy(
-          isLoading = true,
+          isLoading = isNewSearch,
+          isFetchingInProgress = true,
           isRefreshingIndicatorVisible = uiState.isRefreshingIndicatorVisible
         )
         getRepositorySearchResults(
@@ -107,18 +100,27 @@ class SearchViewModel @Inject constructor(
               is NoResultsFound -> {
                 uiState = uiState.copy(noResultsFound = true, isSearchEmpty = false)
               }
-              else -> {}
+              else -> {
+                showError(it.message.orEmpty())
+              }
             }
           }
-        uiState = uiState.copy(isLoading = false, isRefreshingIndicatorVisible = false)
+        uiState = uiState.copy(isLoading = false, isRefreshingIndicatorVisible = false, isFetchingInProgress = false)
       } else {
         uiState = uiState.copy(
           isSearchEmpty = true,
+          isRefreshingIndicatorVisible = false,
           repositories = listOf(),
           noResultsFound = false,
         )
       }
     }
+  }
+  
+  private fun showError(error: String) = viewModelScope.launch {
+    uiState = uiState.copy(screenError = error)
+    delay(100)
+    uiState = uiState.copy(screenError = "")
   }
 }
 

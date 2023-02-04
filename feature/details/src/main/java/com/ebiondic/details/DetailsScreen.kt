@@ -1,5 +1,6 @@
 package com.ebiondic.details
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -9,40 +10,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ebiondic.designsystem.component.GexButton
+import com.ebiondic.designsystem.component.LoadingIndicator
 import com.ebiondic.designsystem.component.RepositoryDetailsHeader
 import com.ebiondic.designsystem.component.ShortRepositoryOverview
 import com.ebiondic.designsystem.theme.largePadding
 import com.ebiondic.designsystem.theme.smallPadding
+import com.ebiondic.details.action.DetailsScreenEvent
 import com.ebiondic.details.action.DetailsScreenUiState
 
 @Composable
 internal fun DetailsRoute(
   modifier: Modifier = Modifier,
-  viewModel: DetailsViewModel = hiltViewModel()
+  viewModel: DetailsViewModel = hiltViewModel(),
+  onScreenError: () -> Unit,
 ) {
   val context = LocalContext.current
-  
-  LaunchedEffect(key1 = context){
+  val screenError = viewModel.uiState.screenError
+  LaunchedEffect(key1 = context) {
     viewModel.getRepo()
   }
   DetailsScreen(
     modifier = modifier,
     uiState = viewModel.uiState,
-    onAuthorNameCLicked = {
-      ContextCompat.startActivity(
-        context, viewModel.getIntentForOpeningAuthorOnlineProfile(), null
-      )
-    },
-    onVisitProjectOnlineClicked = {
-      ContextCompat.startActivity(
-        context, viewModel.getIntentForOpeningProjectOnlinePage(), null
-      )
-    }
+    onAuthorNameCLicked = { viewModel.onEvent(DetailsScreenEvent.OnOpenOnlineUserDetailsClicked) },
+    onVisitProjectOnlineClicked = { viewModel.onEvent(DetailsScreenEvent.OnOpenOnlineRepositoryDetailsClicked) }
   )
-  
+  LaunchedEffect(key1 = screenError) {
+    if (screenError.isNotEmpty()) {
+      Toast.makeText(context, screenError, Toast.LENGTH_SHORT).show()
+      onScreenError()
+    }
+  }
 }
 
 @Composable
@@ -76,17 +76,17 @@ internal fun DetailsScreen(
         
         ShortInfoTextItem(
           modifier = Modifier.padding(horizontal = smallPadding),
-          type = "Programing language:",
+          type = stringResource(R.string.repository_programing_language_label),
           value = uiState.details.language
         )
         ShortInfoTextItem(
           modifier = Modifier.padding(horizontal = smallPadding),
-          type = "Repository creation:",
+          type = stringResource(R.string.repository_creation_label),
           value = uiState.details.repositoryCreationDate
         )
         ShortInfoTextItem(
           modifier = Modifier.padding(horizontal = smallPadding),
-          type = "Repository modification:",
+          type = stringResource(R.string.repository_modification_label),
           value = uiState.details.repositoryLastModificationDate
         )
         
@@ -112,6 +112,8 @@ internal fun DetailsScreen(
       )
     }
   }
+  
+  LoadingIndicator(isLoading = uiState.isLoading)
   
 }
 

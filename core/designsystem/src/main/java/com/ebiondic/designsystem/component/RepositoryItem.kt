@@ -24,10 +24,12 @@ fun RepositoryItem(
   repositoryName: String,
   authorName: String,
   authorThumbnailImageUrl: String,
+  authorOnlineProfileUrl: String,
   numberOfWatchers: Int,
   numberOfForks: Int,
   numberOfIssues: Int,
-  onItemClicked: (repositoryId: Int) -> Unit = {}
+  onItemClicked: (repositoryId: Int) -> Unit = {},
+  onUserClicked: (profileUrl: String) -> Unit = {}
 ) {
   Row(
     modifier = modifier
@@ -39,7 +41,8 @@ fun RepositoryItem(
     OnlineImage(
       modifier = Modifier
         .size(50.dp)
-        .clip(CircleShape),
+        .clip(CircleShape)
+        .clickable { onUserClicked(authorOnlineProfileUrl) },
       fullSizeImageUrl = authorThumbnailImageUrl,
     )
     Column(modifier = modifier.fillMaxWidth()) {

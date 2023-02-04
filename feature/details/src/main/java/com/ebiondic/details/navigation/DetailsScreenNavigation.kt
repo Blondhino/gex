@@ -28,7 +28,7 @@ fun NavController.navigateToDetailsScreen(repositoryName: String, ownerName: Str
   this.navigate("$detailsScreenRoute/$encodedStringRepositoryName/$encodedStringOwnerName")
 }
 
-fun NavGraphBuilder.detailsScreen() {
+fun NavGraphBuilder.detailsScreen(onScreenError: () -> Unit) {
   composable(
     route = "$detailsScreenRoute/{$repositoryNameArg}/{$ownerNameArg}",
     arguments = listOf(
@@ -36,6 +36,6 @@ fun NavGraphBuilder.detailsScreen() {
       navArgument(ownerNameArg) { type = NavType.StringType }
     )
   ) {
-    DetailsRoute()
+    DetailsRoute(onScreenError = { onScreenError() })
   }
 }
