@@ -10,7 +10,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ebiondic.designsystem.component.GexButton
 import com.ebiondic.designsystem.component.LoadingIndicator
@@ -18,6 +17,7 @@ import com.ebiondic.designsystem.component.RepositoryDetailsHeader
 import com.ebiondic.designsystem.component.ShortRepositoryOverview
 import com.ebiondic.designsystem.theme.largePadding
 import com.ebiondic.designsystem.theme.smallPadding
+import com.ebiondic.details.action.DetailsScreenEvent
 import com.ebiondic.details.action.DetailsScreenUiState
 
 @Composable
@@ -34,16 +34,8 @@ internal fun DetailsRoute(
   DetailsScreen(
     modifier = modifier,
     uiState = viewModel.uiState,
-    onAuthorNameCLicked = {
-      ContextCompat.startActivity(
-        context, viewModel.getIntentForOpeningAuthorOnlineProfile(), null
-      )
-    },
-    onVisitProjectOnlineClicked = {
-      ContextCompat.startActivity(
-        context, viewModel.getIntentForOpeningProjectOnlinePage(), null
-      )
-    }
+    onAuthorNameCLicked = { viewModel.onEvent(DetailsScreenEvent.OnOpenOnlineUserDetailsClicked) },
+    onVisitProjectOnlineClicked = { viewModel.onEvent(DetailsScreenEvent.OnOpenOnlineRepositoryDetailsClicked) }
   )
   LaunchedEffect(key1 = screenError) {
     if (screenError.isNotEmpty()) {

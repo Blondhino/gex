@@ -12,6 +12,7 @@ fun GithubRepositorySearchResponse.mapToListOfGithubRepositoryDtos(): List<Githu
       repositoryName = it.name.orEmpty(),
       authorName = it.owner?.login.orEmpty(),
       authorThumbnailImageUrl = it.owner?.avatar_url.orEmpty(),
+      authorOnlineProfileUrl = it.owner?.html_url.orEmpty(),
       numberOfWatchers = it.watchers_count ?: 0,
       numberOfForks = it.forks_count ?: 0,
       numberOfIssues = it.open_issues_count ?: 0

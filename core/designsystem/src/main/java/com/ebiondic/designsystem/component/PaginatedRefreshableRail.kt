@@ -103,7 +103,7 @@ fun <T : Any> PaginatedRefreshableRail(
         .clip(RoundedCornerShape(50))
         .clickable {
           coroutineScope.launch {
-            listState.animateScrollToItem(0, 0)
+            listState.scrollToItem(0)
           }
         }
         .background(MaterialTheme.colorScheme.secondary),

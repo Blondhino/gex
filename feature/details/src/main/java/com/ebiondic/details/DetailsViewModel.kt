@@ -1,14 +1,16 @@
 package com.ebiondic.details
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ebiondic.common.WebUrlLauncher
 import com.ebiondic.common.decoder.StringDecoder
+import com.ebiondic.details.action.DetailsScreenEvent
+import com.ebiondic.details.action.DetailsScreenEvent.OnOpenOnlineRepositoryDetailsClicked
+import com.ebiondic.details.action.DetailsScreenEvent.OnOpenOnlineUserDetailsClicked
 import com.ebiondic.details.action.DetailsScreenUiState
 import com.ebiondic.details.navigation.DetailsArgs
 import com.ebiondic.domain.GetRepositoryDetailsUseCase
@@ -21,10 +23,22 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   stringDecoder: StringDecoder,
-  val getRepositoryDetailsUseCase: GetRepositoryDetailsUseCase
+  val getRepositoryDetailsUseCase: GetRepositoryDetailsUseCase,
+  val launchWebUrl: WebUrlLauncher
 ) : ViewModel() {
   var uiState by mutableStateOf(DetailsScreenUiState())
   private val detailsArgs: DetailsArgs = DetailsArgs(savedStateHandle, stringDecoder)
+  
+  fun onEvent(event: DetailsScreenEvent) {
+    when (event) {
+      is OnOpenOnlineRepositoryDetailsClicked -> {
+        launchWebUrl(uiState.details?.repositoryOnlineDetails.orEmpty())
+      }
+      is OnOpenOnlineUserDetailsClicked -> {
+        launchWebUrl(uiState.details?.authorOnlineProfileUrl.orEmpty())
+      }
+    }
+  }
   
   fun getRepo() = viewModelScope.launch {
     uiState = uiState.copy(isLoading = true)
@@ -36,14 +50,6 @@ class DetailsViewModel @Inject constructor(
         showError(it.message.orEmpty())
       }
     uiState = uiState.copy(isLoading = false)
-  }
-  
-  fun getIntentForOpeningAuthorOnlineProfile(): Intent {
-    return Intent(Intent.ACTION_VIEW, Uri.parse(uiState.details?.authorOnlineProfileUrl))
-  }
-  
-  fun getIntentForOpeningProjectOnlinePage(): Intent {
-    return Intent(Intent.ACTION_VIEW, Uri.parse(uiState.details?.repositoryOnlineDetails))
   }
   
   private fun showError(error: String) = viewModelScope.launch {

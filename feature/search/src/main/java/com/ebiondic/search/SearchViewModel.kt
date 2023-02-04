@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ebiondic.common.SEARCH_DEBOUNCE_MILLIS
+import com.ebiondic.common.WebUrlLauncher
 import com.ebiondic.designsystem.component.ASCENDING
 import com.ebiondic.designsystem.component.DESCENDING
 import com.ebiondic.domain.GetNavigationArgumentsForDetailsUseCase
@@ -27,7 +28,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
   private val getRepositorySearchResults: GetRepositorySearchResultsUseCase,
-  private val getNavigationArgumentsForDetails: GetNavigationArgumentsForDetailsUseCase
+  private val getNavigationArgumentsForDetails: GetNavigationArgumentsForDetailsUseCase,
+  private val launchWebUrl: WebUrlLauncher
 ) : ViewModel() {
   var uiState by mutableStateOf(SearchScreenUiState())
   private var searchJob: Job? = null
@@ -52,6 +54,9 @@ class SearchViewModel @Inject constructor(
       is OnRefresh -> {
         uiState = uiState.copy(isRefreshingIndicatorVisible = true)
         performSearch()
+      }
+      is OnUserClicked -> {
+        launchWebUrl(event.profileUrl)
       }
     }
   }
@@ -104,6 +109,7 @@ class SearchViewModel @Inject constructor(
       } else {
         uiState = uiState.copy(
           isSearchEmpty = true,
+          isRefreshingIndicatorVisible = false,
           repositories = listOf(),
           noResultsFound = false,
         )

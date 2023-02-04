@@ -32,6 +32,7 @@ internal fun SearchRoute(
     onSorDirectionClicked = { viewModel.onEvent(SearchScreenEvent.OnSortDirectionClicked) },
     onLoadMoreData = { viewModel.onEvent(SearchScreenEvent.OnLoadMoreData) },
     onRefresh = { viewModel.onEvent(SearchScreenEvent.OnRefresh) },
+    onUserClicked = { viewModel.onEvent(SearchScreenEvent.OnUserClicked(it)) },
     onRepositorySelected = {
       val arguments = viewModel.getNavArgumentsForDetails(it)
       onRepositorySelected(arguments.repositoryName, arguments.ownerName)
@@ -52,6 +53,7 @@ internal fun SearchScreen(
   onSortCategorySelected: (Int) -> Unit = { },
   onSorDirectionClicked: () -> Unit = {},
   onRepositorySelected: (id: Int) -> Unit,
+  onUserClicked: (profileUrl: String) -> Unit,
   onLoadMoreData: () -> Unit = {},
   onRefresh: () -> Unit = {},
 ) {
@@ -84,10 +86,12 @@ internal fun SearchScreen(
         repositoryName = it.repositoryName,
         authorName = it.authorName,
         authorThumbnailImageUrl = it.authorThumbnailImageUrl,
+        authorOnlineProfileUrl = it.authorOnlineProfileUrl,
         numberOfWatchers = it.numberOfWatchers,
         numberOfForks = it.numberOfForks,
         numberOfIssues = it.numberOfIssues,
-        onItemClicked = { repositoryId -> onRepositorySelected(repositoryId) }
+        onItemClicked = { repositoryId -> onRepositorySelected(repositoryId) },
+        onUserClicked = { profileUrl -> onUserClicked(profileUrl) }
       )
     }
     if (uiState.noResultsFound) {
