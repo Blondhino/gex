@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="visit_project_online_button_title"/>
+  <string name="repository_creation_label"/>
+  <string name="repository_programing_language_label"/>
+  <string name="repository_modification_label"/>
+</resources>

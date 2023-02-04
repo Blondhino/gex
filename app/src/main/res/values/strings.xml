@@ -1,3 +1,15 @@
 <resources>
-  <string name="app_name">gex</string>
+  <string name="app_name">Gex</string>
+  <string name="search_placeholder">Repository name</string>
+  <string name="sort_by_label">Sort By:</string>
+  <string name="sort_param_stars">Stars</string>
+  <string name="sort_params_forks">Forks</string>
+  <string name="sort_param_updated">Updated</string>
+  <string name="visit_project_online_button_title">Visit project online</string>
+  <string name="upgrade_to_pro_message">Please upgrade to pro version</string>
+  <string name="no_results_found_message">No results found</string>
+  <string name="empty_search_message">Start searching by entering repository name</string>
+  <string name="repository_creation_label">Repository creation:</string>
+  <string name="repository_programing_language_label">Programing language:</string>
+  <string name="repository_modification_label">Repository modification:</string>
 </resources>

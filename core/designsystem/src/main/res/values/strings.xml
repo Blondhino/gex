@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="search_placeholder" />
+  <string name="sort_by_label"/>
+  <string name="sort_param_stars"/>
+  <string name="sort_params_forks"/>
+  <string name="sort_param_updated"/>
+</resources>
