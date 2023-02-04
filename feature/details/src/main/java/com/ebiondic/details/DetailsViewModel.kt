@@ -13,6 +13,7 @@ import com.ebiondic.details.action.DetailsScreenUiState
 import com.ebiondic.details.navigation.DetailsArgs
 import com.ebiondic.domain.GetRepositoryDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,7 +33,7 @@ class DetailsViewModel @Inject constructor(
         uiState = uiState.copy(details = it)
       }
       .onFailure {
-        uiState = uiState.copy(screenError = it.message.orEmpty())
+        showError(it.message.orEmpty())
       }
     uiState = uiState.copy(isLoading = false)
   }
@@ -45,5 +46,10 @@ class DetailsViewModel @Inject constructor(
     return Intent(Intent.ACTION_VIEW, Uri.parse(uiState.details?.repositoryOnlineDetails))
   }
   
+  private fun showError(error: String) = viewModelScope.launch {
+    uiState = uiState.copy(screenError = error)
+    delay(100)
+    uiState = uiState.copy(screenError = "")
+  }
   
 }

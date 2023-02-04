@@ -9,4 +9,7 @@
   <string name="upgrade_to_pro_message">Please upgrade to pro version</string>
   <string name="no_results_found_message">No results found</string>
   <string name="empty_search_message">Start searching by entering repository name</string>
+  <string name="repository_creation_label">Repository creation:</string>
+  <string name="repository_programing_language_label">Programing language:</string>
+  <string name="repository_modification_label">Repository modification:</string>
 </resources>
