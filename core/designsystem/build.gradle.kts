@@ -13,6 +13,7 @@ android {
 dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(libs.glide.compose)
+  implementation(libs.airbnb.lottie.compose)
   api(libs.androidx.compose.foundation)
   api(libs.androidx.compose.foundation.layout)
   api(libs.androidx.compose.material3)

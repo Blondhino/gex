@@ -73,7 +73,7 @@ fun <T : Any> PaginatedRefreshableRail(
         
       }
       item {
-        if (isFetching) {
+        if (isFetching && items.isNotEmpty()) {
           Row(
             modifier = Modifier
               .fillMaxWidth(),

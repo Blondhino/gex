@@ -7,6 +7,7 @@ import com.ebiondic.model.ui.GithubRepo
 data class SearchScreenUiState(
   val searchTerm: String = "",
   val isLoading: Boolean = false,
+  val isFetchingInProgress: Boolean = false,
   val isRefreshingIndicatorVisible: Boolean = false,
   val screenError: String = "",
   val repositories: List<GithubRepo> = listOf(),

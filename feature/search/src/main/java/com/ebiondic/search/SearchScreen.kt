@@ -1,19 +1,17 @@
 package com.ebiondic.search
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ebiondic.designsystem.R.*
-import com.ebiondic.designsystem.component.Hint
-import com.ebiondic.designsystem.component.PaginatedRefreshableRail
-import com.ebiondic.designsystem.component.RepositoryItem
-import com.ebiondic.designsystem.component.SearchAndSort
+import com.ebiondic.designsystem.R.drawable
+import com.ebiondic.designsystem.component.*
 import com.ebiondic.designsystem.theme.mediumPadding
 import com.ebiondic.search.action.SearchScreenEvent
 import com.ebiondic.search.action.SearchScreenUiState
@@ -24,6 +22,8 @@ internal fun SearchRoute(
   viewModel: SearchViewModel = hiltViewModel(),
   onRepositorySelected: (repositoryName: String, ownerName: String) -> Unit
 ) {
+  val screenError = viewModel.uiState.screenError
+  val context = LocalContext.current
   SearchScreen(
     modifier = modifier,
     uiState = viewModel.uiState,
@@ -37,6 +37,11 @@ internal fun SearchRoute(
       onRepositorySelected(arguments.repositoryName, arguments.ownerName)
     }
   )
+  LaunchedEffect(key1 = screenError) {
+    if (screenError.isNotEmpty()) {
+      Toast.makeText(context, screenError, Toast.LENGTH_SHORT).show()
+    }
+  }
 }
 
 @Composable
@@ -56,7 +61,7 @@ internal fun SearchScreen(
       .padding(mediumPadding)
   ) {
     PaginatedRefreshableRail(
-      isFetching = uiState.isLoading,
+      isFetching = uiState.isFetchingInProgress,
       loadMoreData = { onLoadMoreData() },
       items = uiState.repositories,
       isEnabledScrollToTopButton = true,
@@ -92,7 +97,6 @@ internal fun SearchScreen(
         message = R.string.no_results_found_message
       )
     }
-    
     if (uiState.isSearchEmpty) {
       Hint(
         modifier = Modifier.align(Alignment.Center),
@@ -100,6 +104,6 @@ internal fun SearchScreen(
         message = R.string.empty_search_message
       )
     }
-    
+    LoadingIndicator(isLoading = uiState.isLoading && !uiState.isRefreshingIndicatorVisible)
   }
 }
