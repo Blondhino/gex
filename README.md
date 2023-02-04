@@ -2,6 +2,12 @@
 
 Gex is a Github explorer tool for searching repositories and accessing their details. It has two build variants, **PRO** and **FREE**, each offering different functionality.
 
+<div style="display: flex;">
+<img src="https://raw.githubusercontent.com/Blondhino/gex/master/scr_1.png?token=GHSAT0AAAAAAB3W3XRKBET4BMLMMHEW5AIKY66N5NA" width="300">
+<img src="https://raw.githubusercontent.com/Blondhino/gex/master/scr2.png?token=GHSAT0AAAAAAB3W3XRKR3RBVUYF3D32R5MOY66ODNQ" width="300">
+<img src="https://raw.githubusercontent.com/Blondhino/gex/master/scr_3.png?token=GHSAT0AAAAAAB3W3XRK4EI2LXVSTJVXNTL6Y66OD6A" width="300">
+</div>
+
 ## Features
 - Search for Github repositories
 - Sort results by amount of stars/forks or lattest update
